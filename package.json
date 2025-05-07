@@ -1,0 +1,27 @@
+{
+  "name": "skunk",
+  "version": "1.0.0",
+  "description": "A beautiful discord bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Akinwalee/skunk.git"
+  },
+  "author": "Obatula Fuad",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Akinwalee/skunk/issues"
+  },
+  "homepage": "https://github.com/Akinwalee/skunk#readme",
+  "devDependencies": {
+    "@eslint/js": "^9.26.0",
+    "eslint": "^9.26.0"
+  },
+  "dependencies": {
+    "discord.js": "^14.19.3",
+    "dotenv": "^16.5.0"
+  }
+}
