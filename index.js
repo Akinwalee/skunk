@@ -35,12 +35,6 @@ for (const folder of commandFolders) {
 client.once(Events.ClientReady, readyClient => {
     console.log(`The client is ready! \n Logged in as ${readyClient.user.tag} (${readyClient.user.id})`);
 });
-// client.on(Events.MessageCreate, message => {
-//     if (message.author.bot) return;
-//     if (message.content === '!ping') {
-//         message.channel.send('Pong!');
-//     }
-// });
 
 client.on(Events.InteractionCreate, async interaction => {
     if (!interaction.isCommand()) return;
