@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits, MessageFlags } = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -22,14 +22,14 @@ module.exports = {
         if (!interaction.guild) {
             return interaction.reply({
                 content: "This command can only be used in a server.",
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
             });
         }
 
         if (!interaction.member.permissions.has(PermissionFlagsBits.KickMembers)) {
             return interaction.reply({
                 content: "You do not have permission to use this command.",
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
             });
         }
 
@@ -38,35 +38,35 @@ module.exports = {
         if (!target) {
             return interaction.reply({
                 content: "That user is not in this server!",
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
             });
         }
 
         if (target.id === interaction.user.id) {
             return interaction.reply({
                 content: "You cannot kick yourself!",
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
             });
         }
 
         if (target.id === interaction.guild.ownerId) {
             return interaction.reply({
                 content: "You cannot kick the server owner!",
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
             });
         }
 
         if (target.id === interaction.client.user.id) {
             return interaction.reply({
                 content: "You cannot kick me!",
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
             });
         }
 
         if (!target.kickable) {
             return interaction.reply({
                 content: "I cannot kick this user!",
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
             });
         }
 
@@ -79,7 +79,7 @@ module.exports = {
             console.error("Error kicking user:", error);
             return interaction.reply({
                 content: "There was an error trying to kick that user.",
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
             });
         }
     }

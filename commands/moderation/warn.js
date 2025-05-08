@@ -22,14 +22,14 @@ module.exports = {
         if (!interaction.guild) {
             return interaction.reply({
                 content: "This command can only be used in a server.",
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
             });
         }
 
         if (!interaction.member.permissions.has(PermissionFlagsBits.KickMembers)) {
             return interaction.reply({
                 content: "You do not have permission to use this command.",
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
             });
         }
 
@@ -38,50 +38,50 @@ module.exports = {
         if (!target) {
             return interaction.reply({
                 content: "That user is not in this server!",
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
             });
         }
         if (target.id === interaction.user.id) {
             return interaction.reply({
                 content: "You cannot warn yourself!",
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
             });
         }
         if (target.id === interaction.guild.ownerId) {
             return interaction.reply({
                 content: "You cannot warn the server owner!",
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
             });
         }
         if (target.id === interaction.client.user.id) {
             return interaction.reply({
                 content: "You cannot warn the bot!",
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
             });
         }
         if (target.user.bot) {
             return interaction.reply({
                 content: "You cannot warn a bot!",
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
             });
         }
         if (!target.kickable) {
             return interaction.reply({
                 content: "I cannot warn this user!",
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
             });
         }
         try {
             await target.send(`You have been warned in **${interaction.guild.name}** for: ${reason}`);
             return interaction.reply({
                 content: `Successfully warned ${target.user.tag} for: ${reason}`,
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
             });
         } catch (error) {
             console.error("Error sending warning message:", error);
             return interaction.reply({
                 content: "There was an error trying to send the warning message.",
-                ephemeral: true,
+                flags: MessageFlags.Ephemeral,
             });
         }
     }
