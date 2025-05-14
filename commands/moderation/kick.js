@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, PermissionFlagsBits, MessageFlags } = require("discord.js");
 import { logModerationAction } from "../../utils/log";
+import { isOnCooldown, setCooldown, getRemainingCooldown } from "../../utils/cooldown";
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -72,8 +73,17 @@ module.exports = {
         }
 
         try {
+            if (isOnCooldown(interaction.user.id, "kick")) {
+                const remainingTime = getRemainingCooldown(interaction.user.id, "kick");
+                return interaction.reply({
+                    content: `You are on cooldown! Please wait ${remainingTime} seconds.`,
+                    flags: MessageFlags.Ephemeral,
+                });
+            }
             await target.kick(reason);
             await logModerationAction(interaction, "kick", interaction.user.tag, target.user.tag, reason);
+            setCooldown(interaction.user.id, "kick", 1000);
+            await target.send(`You have been kicked from **${interaction.guild.name}** for: ${reason}`);
             return interaction.reply({
                 content: `Successfully kicked ${target.user.tag} from the server. Reason: ${reason}`,
             });

@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, PermissionFlagsBits, MessageFlags } = require('discord.js');
 import { logModerationAction } from '../../utils/log';
+import { isOnCooldown, setCooldown, getRemainingCooldown } from '../../utils/cooldown';
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -78,8 +79,17 @@ module.exports = {
             });
         }
         try {
+            if (isOnCooldown(interaction.user.id, 'ban')) {
+                const remainingTime = getRemainingCooldown(interaction.user.id, 'ban');
+                return interaction.reply({
+                    content: `You are on cooldown! Please wait ${remainingTime} seconds before using this command again.`,
+                    flags: MessageFlags.Ephemeral,
+                });
+            }
             await target.ban({ reason });
+            await target.send(`You have been banned from **${interaction.guild.name}** for: ${reason}`);
             await logModerationAction(interaction, 'ban', interaction.user.tag, target.user.tag, reason);
+            setCooldown(interaction.user.id, 'ban', 1000);
             return interaction.reply({
                 content: `Successfully banned ${target.user.tag} from the server.`,
                 flags: MessageFlags.Ephemeral,
