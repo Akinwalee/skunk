@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, PermissionFlagsBits, MessageFlags } = require("discord.js");
+import { logModerationAction } from "../../utils/log";
 
 module.exports = {
     data:new SlashCommandBuilder()
@@ -73,6 +74,7 @@ module.exports = {
         }
         try {
             await target.send(`You have been warned in **${interaction.guild.name}** for: ${reason}`);
+            await logModerationAction(interaction, "warn", interaction.user.tag, target.user.tag, reason);
             return interaction.reply({
                 content: `Successfully warned ${target.user.tag} for: ${reason}`,
                 flags: MessageFlags.Ephemeral,

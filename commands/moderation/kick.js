@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, PermissionFlagsBits, MessageFlags } = require("discord.js");
+import { logModerationAction } from "../../utils/log";
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -72,6 +73,7 @@ module.exports = {
 
         try {
             await target.kick(reason);
+            await logModerationAction(interaction, "kick", interaction.user.tag, target.user.tag, reason);
             return interaction.reply({
                 content: `Successfully kicked ${target.user.tag} from the server. Reason: ${reason}`,
             });
