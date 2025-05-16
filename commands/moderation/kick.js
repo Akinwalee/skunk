@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, PermissionFlagsBits, MessageFlags } = require("discord.js");
-import { logModerationAction } from "../../utils/log";
-import { isOnCooldown, setCooldown, getRemainingCooldown } from "../../utils/cooldown";
+const { logModerationAction } = require("../../utils/log.js");
+const { isOnCooldown, setCooldown, getRemainingCooldown } = require("../../utils/cooldown.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -83,7 +83,9 @@ module.exports = {
             await target.kick(reason);
             await logModerationAction(interaction, "kick", interaction.user.tag, target.user.tag, reason);
             setCooldown(interaction.user.id, "kick", 1000);
-            await target.send(`You have been kicked from **${interaction.guild.name}** for: ${reason}`);
+            if (!target.user.bot) {
+                await target.send(`You have been kicked from **${interaction.guild.name}** for: ${reason}`);
+            }
             return interaction.reply({
                 content: `Successfully kicked ${target.user.tag} from the server. Reason: ${reason}`,
             });

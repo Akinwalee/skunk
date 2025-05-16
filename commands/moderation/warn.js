@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, PermissionFlagsBits, MessageFlags } = require("discord.js");
-import { logModerationAction } from "../../utils/log";
+const { logModerationAction } = require("../../utils/log.js");
 
 module.exports = {
     data:new SlashCommandBuilder()
@@ -56,7 +56,7 @@ module.exports = {
         }
         if (target.id === interaction.client.user.id) {
             return interaction.reply({
-                content: "You cannot warn the bot!",
+                content: "You cannot warn me!",
                 flags: MessageFlags.Ephemeral,
             });
         }

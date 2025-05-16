@@ -1,6 +1,6 @@
-const { SlashCommandBuilder, PermissionFlagsBits, MessageFlags } = require('discord.js');
-import { logModerationAction } from '../../utils/log';
-import { isOnCooldown, setCooldown, getRemainingCooldown } from '../../utils/cooldown';
+const { SlashCommandBuilder, PermissionFlagsBits, MessageFlags } = require("discord.js");
+const { logModerationAction } = require('../../utils/log.js');
+const { isOnCooldown, setCooldown, getRemainingCooldown } = require('../../utils/cooldown.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -87,7 +87,9 @@ module.exports = {
                 });
             }
             await target.ban({ reason });
-            await target.send(`You have been banned from **${interaction.guild.name}** for: ${reason}`);
+            if (!target.user.bot) {
+                await target.send(`You have been banned from **${interaction.guild.name}** for: ${reason}`);
+            }
             await logModerationAction(interaction, 'ban', interaction.user.tag, target.user.tag, reason);
             setCooldown(interaction.user.id, 'ban', 1000);
             return interaction.reply({
